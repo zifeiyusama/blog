@@ -1,0 +1,33 @@
+{% load cache %}
+{% cache 300 sidebar %}
+<aside class="col-md-4 col-sm-4 hidden-xs pull-right sidebar">
+  <div class="widget">
+    <h4 class="widget-title">栏目列表</h4>
+    <div>
+        {% for column in columns %}
+            <p>
+              <a href="{% url 'blog:column' column.id %}">{{ column.label }}</a>
+            </p>
+        {% endfor %}
+    </div>
+  </div>
+  <div class="widget">
+    <h4 class="widget-title">归档</h4>
+    <div>
+        {% for archive in archives %}
+            <p>
+              <a href="{% url 'blog:archive' archive.abbreviation %}">{{ archive.label }}</a>
+            </p>
+        {% endfor %}
+    </div>
+  </div>
+  <div class="widget">
+    <h4 class="widget-title">标签云</h4>
+    <div class="tag-cloud">
+        {% for tag in tags %}
+          <a href="{% url 'blog:tag' tag.label %}">{{ tag.label }}</a>
+        {% endfor %}
+    </div>
+  </div>
+</aside>
+{% endcache %}

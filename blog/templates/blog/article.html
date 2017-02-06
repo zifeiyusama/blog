@@ -1,0 +1,61 @@
+{% extends "blog/base.html" %}
+{% block title %}子非鱼｜{{ article.title }}{% endblock %}
+{% load static %}
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'editor/css/editormd.preview.min.css'%}">
+    <script src="{% static 'editor/js/jquery.min.js' %}"></script>
+    <script src="{% static 'editor/js/lib/marked.min.js' %}"></script>
+    <script src="{% static 'editor/js/lib/prettify.min.js' %}"></script>
+    <script src="{% static 'editor/js/lib/raphael.min.js' %}"></script>
+    <script src="{% static 'editor/js/lib/underscore.min.js' %}"></script>
+    <script src="{% static 'editor/js/lib/sequence-diagram.min.js' %}"></script>
+    <script src="{% static 'editor/js/lib/flowchart.min.js' %}"></script>
+    <script src="{% static 'editor/js/lib/jquery.flowchart.min.js' %}"></script>
+    <script src="{% static 'editor/js/editormd.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+{% load blog_extras %}
+{% if article %}
+<article class="post">
+  <div class="post-head">
+    <h1 class="post-title">
+      <a href="{% url 'blog:article' article.id %}">{{ article.title }}</a>
+    </h1>
+    <div class="post-meta">
+      <time>{{ article.published_date|formatdate:"LLLL" }}</time>
+    </div>
+  </div>
+  <div class="post-content" id="markdown">
+      <textarea>
+          {{ article.content }}
+      </textarea>
+  </div>
+  <div class="post-footer">
+    <div class="pull-left tag-list">
+      <i class="fa fa-tags" aria-hidden="true"></i>
+      {% for post_tag in article.tags.all %}
+        <a href="{% url 'blog:tag' post_tag.abbreviation %}">{{ post_tag.label }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</article>
+<script type="text/javascript">
+    $(function() {
+        var markdown = $('#markdown').val();
+        // var markdown_content;
+        editormd.markdownToHTML("markdown", {
+            markdown        : markdown,//+ "\r\n" + $("#append-test").text(),
+            htmlDecode      : "style,script,iframe",  // you can filter tags decode
+            tocm            : true,    // Using [TOCM]
+            markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+            emoji           : true,
+            taskList        : true,
+            tex             : true,  // 默认不解析
+            flowChart       : true,  // 默认不解析
+            sequenceDiagram : true,  // 默认不解析
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

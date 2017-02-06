@@ -1,0 +1,9 @@
+{% extends "admin/change_form.html" %}
+{# Override bottom and add return button #}
+{% block submit_buttons_bottom %}
+    <div class="submit-row">
+        <a href="{% url 'admin:blog_archive_changelist' %}">
+            <input type="button" value="Return" class="default"/>
+        </a>
+    </div>
+{% endblock %}

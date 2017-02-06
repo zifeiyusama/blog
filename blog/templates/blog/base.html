@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>
+      {% block title %}子非鱼{% endblock %}
+  </title>
+  {% load static %}
+  {% block style %}
+  <!--bootstrap-->
+  <link rel="stylesheet" type="text/css" href="{% static 'blog/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'blog/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'blog/css/base.css'%}">
+  <script type="text/javascript" src="{% static 'blog/js/moment.js' %}"></script>
+    <script type="text/javascript">
+        moment.locale("zh-cn");
+    </script>
+  <!--[if lt IE 9]>
+  <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  {% endblock %}
+</head>
+<body>
+{% include "blog/include/header.html" %}
+<div class="container main-content">
+  <div class="row">
+    <main class="col-md-8 col-sm-8">
+      {% block content %}{% endblock %}
+      {% include "blog/include/paginator.html" %}
+    </main>
+    {% include "blog/include/aside.html" %}
+  </div>
+</div>
+{% include "blog/include/footer.html" %}
+{% block script %}
+<!--jquery-->
+<script src="{% static 'blog/js/jquery.min.js' %}"></script>
+<!--bootstrap-->
+<script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+{% endblock %}
+</body>
+</html>
