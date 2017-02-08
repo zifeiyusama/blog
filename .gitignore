@@ -2,3 +2,5 @@
 __pycache__/
 *.py[cod]
 *$py.class
+fb_upload/wiki
+fb_upload/versions
