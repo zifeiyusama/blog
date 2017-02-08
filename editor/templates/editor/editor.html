@@ -1,6 +1,5 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'editor/css/editormd.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'editor/css/style.css' %}">
 <style media="screen">
     .editormd-menu {
         margin-left: 0 !important
@@ -10,7 +9,6 @@
 <script type="text/javascript" src="{% static 'editor/js/editormd.min.js' %}"></script>
 <body>
     <div id="editormd">
-        <!-- <textarea style="display:none;"></textarea> -->
         {{ textarea }}
     </div>
     <script type="text/javascript">

@@ -17,6 +17,7 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from editor.models import EditorField
+from .fields import TagsInputFormField
 
 
 class BaseModel(models.Model):
@@ -86,6 +87,15 @@ class Column(ParentBase):
         verbose_name_plural = _('Columns')
 
 
+class TagsInputField(models.ManyToManyField):
+    def formfield(self, **kwargs):
+        defaults = {
+            'form_class': TagsInputFormField,
+            'to_field_name': 'label',
+        }
+        defaults.update(kwargs)
+        return super(TagsInputField, self).formfield(**defaults)
+
 class Article(BaseModel):
     PUBLISHED = ('PUBLISHED', '已发布')
     DRAFT = ('DRAFT', '草稿')
@@ -103,13 +113,13 @@ class Article(BaseModel):
     archive = models.ForeignKey(Archive, verbose_name=_('archive'),
                                 related_name='articles',
                                 related_query_name='article')
-    tags = models.ManyToManyField(Tag, verbose_name=_('tags'),
+    tags = TagsInputField(Tag, verbose_name=_('tags'),
                                   related_name='articles',
                                   related_query_name='article',
                                   blank=True)
     published_date = models.DateTimeField(verbose_name=_('published date'),
                                           blank=True, null=True)
-    deleted_date = models.DateTimeField(verbose_name=_('deleted date'), 
+    deleted_date = models.DateTimeField(verbose_name=_('deleted date'),
                                         blank=True, null=True)
 
     class Meta:

@@ -14,11 +14,8 @@ from .models import Column, Article, Archive, Tag
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db import models
-
 from django.utils import timezone
 
-from editor.widgets import AdminEditorWidget
-from editor.models import EditorField
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
@@ -35,7 +32,8 @@ class ArticleAdmin(admin.ModelAdmin):
             'fields': (
                 'title',
                 'status',
-                ('archive', 'column', 'tags'),
+                ('archive', 'column'),
+                'tags',
                 'abstract_content',
                 'content',
             )
@@ -56,7 +54,6 @@ class ArticleAdmin(admin.ModelAdmin):
                     'published_date')
     ordering = ['created_date', 'published_date']
     list_filter = ('column', 'archive', 'status')
-    formfield_overrides = {EditorField: {'widget': AdminEditorWidget}}
     list_per_page = 15
     save_as = True
     save_as_continue = False
@@ -133,11 +130,10 @@ class ColumnAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         try:
             column = Column.objects.get(label=obj.label)
-
             self.message_user(request, '栏目已经存在', level=messages.WARNING)
             return
         except ObjectDoesNotExist:
-            super(ArticleAdmin, self).save_model(request, obj, form, change)
+            super(ColumnAdmin, self).save_model(request, obj, form, change)
 
 
 class ArticleM2MInline(ArticleInline):
